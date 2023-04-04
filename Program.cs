@@ -19,7 +19,7 @@ class MainClass
         Console.Clear();
 
         // Let the user know that That all answers should be in captials letter for the start of each sentence or A noun or name
-        Console.WriteLine("Please note that all answers should be in should have a captial letter for the start of a answer eg (Like this) not (not like this)\n But if it is a name please enter there last and first name with a capital letter");
+        Console.WriteLine("Please note that all answers should have a captial letter for the start of a answer eg. (Like this) not (not like this)\n But if it is a name please enter there last and first name with a capital letter");
         Thread.Sleep(5000);
         Console.Clear();
 
