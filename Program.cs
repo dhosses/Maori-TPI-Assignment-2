@@ -1,6 +1,6 @@
-﻿class MainClass
+﻿public class MainClass
 {
-    public static object Main(string[] args)
+    public static int Main()
     {
 
         // Welcome message
@@ -26,81 +26,80 @@
         Console.WriteLine("I for Intermediate");
         Console.WriteLine("H for Hard");
         Console.Write("Your choice: ");
-        char level = Console.ReadLine().ToUpper()[0];
-        string[] questions;
-        int score = 0;
+        string level = Console.ReadLine().ToUpper()[0].ToString();
+        string[] Questions;
+        string score = 0.ToString();
 
         switch (level)
         {
-            case 'B':
+            case "B":
                 askquestions(name, level);
                 break;
 
-            case 'I':
+            case "I":
                 askquestions(name, level);
                 break;
 
-            case 'H':
+            case "H":
                 askquestions(name, level);
                 break;
         }
 
 
 
-        static void askquestions(string name, char level)
+        static void askquestions(string name, string level)
         {
+            // Determine quiz questions based on level
+            string[,] LocalQuestions;
+            switch (level)
             {
+                case "B":
+                    LocalQuestions = new string[,] {
+                            { "Hello", "Kia ora" },
+                            { "Thank you", "Teno koe" },
+                            { "Goodbye", "Kia ora" },
+                            { "Yes", "Ae" },
+                            { "No", "Kao" },
+                            { "I love you", "Aroha ana ahau ki a koe" }
+                    };
+                    break;
+                case "I":
+                    LocalQuestions = new string[,] {
+                            { "What is your name", "Ko wai to ingoa?" },
+                            { "Where are you from", "No hea koe?" },
+                            { "How are you", "Kei te pehea koe?" },
+                            { "What time is it", "He aha te taima?" },
+                            { "What is this", "He aha tenei?" },
+                            { "How old are you", "E hia ou tau?" },
+                    };
+                    break;
+                case "H":
+                    LocalQuestions = new string[,] {
+                            { "What is the Maori name for New Zealand", "Aotearoa" },
+                            { "What is the name of the longest river in New Zealand", "Waikato River" },
+                            { "Who is the current Prime Minister of New Zealand", "Chirs Hipkins" },
+                            { "What is the name of the famous Maori haka", "Ka Mate" },
+                            { "Who was the first Maori astronaut to go to space", "Mana Vautier" },
+                            { "What is the Maori word for love", "Aroha" },
+                    };
+                    break;
+                default:
+                    Console.WriteLine("Invalid level selection. Please select B, I, or H.");
+                    return;
 
-                // Determine quiz questions based on level
-                string[,] Questions;
-                switch (level)
-                {
-                    case "B":
-                        Questions = new string[,] {
-          { "Hello", "Kia ora" },
-          { "Thank you", "Teno koe" },
-          { "Goodbye", "Kia ora" },
-          { "Yes", "Ae" },
-          { "No", "Kao" },
-          { "I love you", "Aroha ana ahau ki a koe" }
-                        };
-                        break;
-                    case "I":
-                        Questions = new string[,] {
-          { "What is your name", "Ko wai to ingoa?" },
-          { "Where are you from", "No hea koe?" },
-          { "How are you", "Kei te pehea koe?" },
-          { "What time is it", "He aha te taima?" },
-          { "What is this", "He aha tenei?" },
-          { "How old are you", "E hia ou tau?" },
-                        };
-                        break;
-                    case "H":
-                        Questions = new string[,] {
-          { "What is the Maori name for New Zealand", "Aotearoa" },
-          { "What is the name of the longest river in New Zealand", "Waikato River" },
-          { "Who is the current Prime Minister of New Zealand", "Chirs Hipkins" },
-          { "What is the name of the famous Maori haka", "Ka Mate" },
-          { "Who was the first Maori astronaut to go to space", "Mana Vautier" },
-          { "What is the Maori word for love", "Aroha" },
-                        };
-                        break;
-                    default:
-                        Console.WriteLine("Invalid level selection. Please select B, I, or H.");
-                        return;
 
-                }
 
             }
+
             // Ask questions
-            for (int i = 0; i < questions.GetLength(0); i++)
+            for (int i = 0; i < LocalQuestions.GetLength(0); i++)
             {
                 // Ask question
-                Console.Write(name + ", what is the Maori translation for '" + questions[i, 0] + "? ");
+                Console.Write(name + ", what is the Maori translation for '" + LocalQuestions[i, 0] + "? ");
                 string answer = Console.ReadLine();
 
                 // Validate answer
-                if (answer == questions[i, 1])
+                if (answer == LocalQuestions[i, 1])
                 {
                     Console.WriteLine("Correct!");
                     score++;
@@ -112,7 +111,7 @@
                 }
                 else
                 {
-                    Console.WriteLine("Incorrect. The correct answer is: " + questions[i, 1]);
+                    Console.WriteLine("Incorrect. The correct answer is: " + LocalQuestions[i, 1]);
                 }
 
                 // Delay and clear screen
@@ -122,7 +121,8 @@
 
             // Display final score
             Console.WriteLine("Congratulations " + name + ", you finished the quiz!");
-            Console.WriteLine("Your final score is: " + score + "/" + questions.GetLength(0));
+            Console.WriteLine("Your final score is: " + score + "/" + LocalQuestions.GetLength(0));
+
         }
     }
 }
