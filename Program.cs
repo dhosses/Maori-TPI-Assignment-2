@@ -1,56 +1,65 @@
 ﻿public class MainClass
 {
-    public static int Main()
+    public static void Main()
     {
-
         // Welcome message
         Console.WriteLine("Welcome to the Te Reo Maori Quiz!");
 
-        // Ask for name
-        Console.Write("What is your name?  \n ");
-        string name = Console.ReadLine();
+        string name = getName();
 
         // Reply With hello + name then delay
         Console.WriteLine("Hello " + name);
         Thread.Sleep(1500);
         Console.Clear();
 
-        // Let the user know that That all answers should be in captials letter for the start of each sentence or A noun or name
-        Console.WriteLine("Please note that all answers should have a captial letter for the start of a answer eg. (Like this) not (not like this)\nBut if it is a name please enter there last and first name with a capital letter");
-        Thread.Sleep(5000);
-        Console.Clear();
+        string level = chooseLevel(name);
+        (int score, int numQuestions) = askQuestions(name, level);
+        showResults(name, score, numQuestions);
 
-        // Ask for level
-        Console.WriteLine("Please choose a level: ");
-        Console.WriteLine("B for Beginner");
-        Console.WriteLine("I for Intermediate");
-        Console.WriteLine("H for Hard");
-        Console.Write("Your choice: ");
-        string level = Console.ReadLine().ToUpper()[0].ToString();
-        string[] Questions;
-        string score = 0.ToString();
-
-        switch (level)
+        static string getName()
         {
-            case "B":
-                askquestions(name, level);
-                break;
-
-            case "I":
-                askquestions(name, level);
-                break;
-
-            case "H":
-                askquestions(name, level);
-                break;
+            string _name;
+            // Ask for name
+            Console.Write("What is your name?  \n");
+            string? providedName = Console.ReadLine();
+            if (providedName?.Length > 0) {
+                _name = providedName;
+                return _name;
+            }
+            return getName();
         }
 
-
-
-        static void askquestions(string name, string level)
+        static string chooseLevel(string name)
         {
+            // Ask for level
+            Console.WriteLine("Please choose a level:");
+            Console.WriteLine("\tB for Beginner");
+            Console.WriteLine("\tI for Intermediate");
+            Console.WriteLine("\tH for Hard");
+            Console.Write("Your choice: ");
+            string? _level = Console.ReadLine()?.ToUpper()[0].ToString();
+
+            switch (_level)
+            {
+                case "B":
+                    break;
+                case "I":
+                    break;
+                case "H":
+                    break;
+                default:
+                    Console.WriteLine("Invalid level selection. Please select B, I, or H.");
+                    return chooseLevel(name);
+            }
+            return _level;
+        }
+
+        static (int, int) askQuestions(string name, string level)
+        {
+            int score = 0;
+
             // Determine quiz questions based on level
-            string[,] LocalQuestions;
+            string[,] LocalQuestions = new string[,] { };
             switch (level)
             {
                 case "B":
@@ -83,23 +92,19 @@
                             { "What is the Maori word for love", "Aroha" },
                     };
                     break;
-                default:
-                    Console.WriteLine("Invalid level selection. Please select B, I, or H.");
-                    return;
-
-
-
             }
 
+            int questionsCount = LocalQuestions.GetLength(0);
+
             // Ask questions
-            for (int i = 0; i < LocalQuestions.GetLength(0); i++)
+            for (int i = 0; i < questionsCount; i++)
             {
                 // Ask question
-                Console.Write(name + ", what is the Maori translation for '" + LocalQuestions[i, 0] + "? ");
-                string answer = Console.ReadLine();
+                Console.WriteLine(name + ", what is the Maori translation for '" + LocalQuestions[i, 0] + "?");
+                string? answer = Console.ReadLine();
 
                 // Validate answer
-                if (answer == LocalQuestions[i, 1])
+                if (answer?.ToUpper() == LocalQuestions[i, 1].ToUpper())
                 {
                     Console.WriteLine("Correct!");
                     score++;
@@ -115,13 +120,30 @@
                 }
 
                 // Delay and clear screen
-                Thread.Sleep(3000);
+                Thread.Sleep(1500);
                 Console.Clear();
             }
 
-            // Display final score
+            return (score, questionsCount);
+        }
+
+        static void showResults(string name, int score, int numQuestions)
+        {
             Console.WriteLine("Congratulations " + name + ", you finished the quiz!");
-            Console.WriteLine("Your final score is: " + score + "/" + LocalQuestions.GetLength(0));
+            Console.WriteLine("Your final score is: " + score + "/" + numQuestions);
+
+            // Display final score
+            switch (score) {
+                case var _ when score < 1:
+                    Console.WriteLine("Better luck next time");
+                    break;
+                case var _ when score < numQuestions:
+                    Console.WriteLine("Good Job, keep going and see if you can ace the test!");
+                    break;
+                case var _ when score == numQuestions:
+                    Console.WriteLine("Well Done!, you aced the test!");
+                    break;
+            }
 
         }
     }
